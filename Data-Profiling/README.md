@@ -1,18 +1,21 @@
-# 📊 Week 3 — Data Profiling & Cleaning Exercise
+# 📊 Data Profiling — Week 3 Individual Exercise
 
-**Course:** Data Management | SRH Fernhochschule Riedlingen  
+**Course:** Data Management | SRH University Heidelberg  
 **Tool:** Tableau Prep Builder  
-**Dataset:** `tableau_prep_cleaning_exercise.csv`
+**Repository:** `tableau_prep / Data-Profiling`
 
 ---
 
-## 📁 Repository Contents
+## 📁 Files in this Folder
 
 | File | Description |
 |------|-------------|
-| `tableau_prep_cleaning_exercise.csv` | Raw dataset (100 rows, 18 columns) |
-| `tableau_prep_cleaned.csv` | Cleaned dataset (95 rows, 22 columns) |
-| `DataProfiling_Report_v2.docx` | Full profiling & cleaning report |
+| `raw.csv` | Raw dataset — 100 rows, 18 columns, uncleaned |
+| `Output.xlsx` | Cleaned dataset exported from Tableau Prep |
+| `Output.hyper` | Tableau Hyper extract — optimised for Tableau Desktop |
+| `flow.tfl` | Tableau Prep flow file — contains all cleaning steps |
+| `Report.pdf` | Full data profiling and cleaning report |
+| `README.md` | This file |
 
 ---
 
@@ -49,7 +52,7 @@ This exercise covers a full data profiling and cleaning pipeline using Tableau P
 ## 🧹 Cleaning Steps Applied
 
 - **Removed 5 duplicate rows** using PARTITION logic on Order_ID
-- **Standardised text** — Group and Replace + Title Case on 6 columns
+- **Standardised text** — Group and Replace + Title Case on 6 columns (Customer_Segment, Payment_Method, Product_Category, Country, Customer_Name, City)
 - **Excluded invalid Age** value (130–140 range)
 - **Cleaned Unit_Price** — stripped € symbol, fixed comma decimals, converted to Float
 - **Filled missing values** — Age → mean (48), Satisfaction_Score → mode (3), categoricals → "Unknown"
