@@ -66,6 +66,6 @@ tableau_prep/
 
 ## 👤 Author
 
-**Nihalpujari**  
+**Nihal Pujari**  
 SRH University Heidelberg  
 Data Management Course
