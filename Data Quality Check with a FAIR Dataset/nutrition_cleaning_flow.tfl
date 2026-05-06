@@ -1,0 +1,220 @@
+{
+  "version": "2024.1",
+  "name": "Nutrition Obesity Cleaning Workflow",
+  "description": "Data quality cleaning workflow for CDC Nutrition, Physical Activity and Obesity dataset",
+  "nodes": {
+    "input_1": {
+      "nodeType": "input",
+      "name": "Raw Input",
+      "id": "input_1",
+      "connectionId": "connection_1",
+      "relation": {
+        "type": "table",
+        "name": "Nutrition_Physical_Activity_Obesity_Clean"
+      },
+      "outputSchema": [
+        {"name": "YearStart", "type": "integer"},
+        {"name": "YearEnd", "type": "integer"},
+        {"name": "LocationAbbr", "type": "string"},
+        {"name": "LocationDesc", "type": "string"},
+        {"name": "Datasource", "type": "string"},
+        {"name": "Class", "type": "string"},
+        {"name": "Topic", "type": "string"},
+        {"name": "Question", "type": "string"},
+        {"name": "Data_Value_Type", "type": "string"},
+        {"name": "Data_Value", "type": "real"},
+        {"name": "Data_Value_Alt", "type": "real"},
+        {"name": "Low_Confidence_Limit", "type": "real"},
+        {"name": "High_Confidence_Limit ", "type": "real"},
+        {"name": "Sample_Size", "type": "real"},
+        {"name": "Age(years)", "type": "string"},
+        {"name": "Education", "type": "string"},
+        {"name": "Sex", "type": "string"},
+        {"name": "Income", "type": "string"},
+        {"name": "Race/Ethnicity", "type": "string"},
+        {"name": "GeoLocation", "type": "string"},
+        {"name": "ClassID", "type": "string"},
+        {"name": "TopicID", "type": "string"},
+        {"name": "QuestionID", "type": "string"},
+        {"name": "DataValueTypeID", "type": "string"},
+        {"name": "LocationID", "type": "integer"},
+        {"name": "StratificationCategory1", "type": "string"},
+        {"name": "Stratification1", "type": "string"},
+        {"name": "StratificationCategoryId1", "type": "string"},
+        {"name": "StratificationID1", "type": "string"}
+      ]
+    },
+    "clean_1": {
+      "nodeType": "superTransform",
+      "name": "Step 1 - Fix Column Name, Data Type, Truncation",
+      "id": "clean_1",
+      "operations": [
+        {
+          "type": "RenameColumn",
+          "description": "Remove trailing whitespace from column name",
+          "columnName": "High_Confidence_Limit ",
+          "newColumnName": "High_Confidence_Limit"
+        },
+        {
+          "type": "ChangeColumnType",
+          "description": "Change Sample_Size from decimal to integer",
+          "columnName": "Sample_Size",
+          "newType": "integer"
+        },
+        {
+          "type": "EditValue",
+          "description": "Fix truncated Education value",
+          "columnName": "Education",
+          "oldValue": "Some college or technical sch",
+          "newValue": "Some college or technical school"
+        }
+      ]
+    },
+    "clean_2": {
+      "nodeType": "superTransform",
+      "name": "Step 2 - Replace Unknown with Null",
+      "id": "clean_2",
+      "operations": [
+        {
+          "type": "ReplaceValue",
+          "description": "Replace Unknown with null in Age(years)",
+          "columnName": "Age(years)",
+          "oldValue": "Unknown",
+          "newValue": null
+        },
+        {
+          "type": "ReplaceValue",
+          "description": "Replace Unknown with null in Education",
+          "columnName": "Education",
+          "oldValue": "Unknown",
+          "newValue": null
+        },
+        {
+          "type": "ReplaceValue",
+          "description": "Replace Unknown with null in Sex",
+          "columnName": "Sex",
+          "oldValue": "Unknown",
+          "newValue": null
+        },
+        {
+          "type": "ReplaceValue",
+          "description": "Replace Unknown with null in Income",
+          "columnName": "Income",
+          "oldValue": "Unknown",
+          "newValue": null
+        },
+        {
+          "type": "ReplaceValue",
+          "description": "Replace Data not reported with null in Income",
+          "columnName": "Income",
+          "oldValue": "Data not reported",
+          "newValue": null
+        },
+        {
+          "type": "ReplaceValue",
+          "description": "Replace Unknown with null in Race/Ethnicity",
+          "columnName": "Race/Ethnicity",
+          "oldValue": "Unknown",
+          "newValue": null
+        }
+      ]
+    },
+    "clean_3": {
+      "nodeType": "superTransform",
+      "name": "Step 3 - Split GeoLocation, Remove Redundant Columns",
+      "id": "clean_3",
+      "operations": [
+        {
+          "type": "SplitColumn",
+          "description": "Split GeoLocation string into Latitude and Longitude",
+          "columnName": "GeoLocation",
+          "separator": ",",
+          "splitResults": [
+            {"name": "Latitude", "type": "real", "index": 1, "cleanPattern": "[^0-9.-]"},
+            {"name": "Longitude", "type": "real", "index": 2, "cleanPattern": "[^0-9.-]"}
+          ]
+        },
+        {
+          "type": "RemoveColumn",
+          "description": "Remove original GeoLocation column",
+          "columnName": "GeoLocation"
+        },
+        {
+          "type": "RemoveColumn",
+          "description": "Remove Data_Value_Alt - identical to Data_Value",
+          "columnName": "Data_Value_Alt"
+        },
+        {
+          "type": "RemoveColumn",
+          "description": "Remove Data_Value_Type - constant value across all rows",
+          "columnName": "Data_Value_Type"
+        },
+        {
+          "type": "RemoveColumn",
+          "description": "Remove DataValueTypeID - constant value across all rows",
+          "columnName": "DataValueTypeID"
+        },
+        {
+          "type": "RemoveColumn",
+          "description": "Remove Datasource - constant value across all rows",
+          "columnName": "Datasource"
+        },
+        {
+          "type": "RemoveColumn",
+          "description": "Remove YearEnd - always equal to YearStart",
+          "columnName": "YearEnd"
+        }
+      ]
+    },
+    "output_1": {
+      "nodeType": "output",
+      "name": "Cleaned Output",
+      "id": "output_1",
+      "outputType": "csv",
+      "outputFileName": "nutrition_obesity_cleaned.csv",
+      "outputSchema": [
+        {"name": "YearStart", "type": "integer"},
+        {"name": "LocationAbbr", "type": "string"},
+        {"name": "LocationDesc", "type": "string"},
+        {"name": "Class", "type": "string"},
+        {"name": "Topic", "type": "string"},
+        {"name": "Question", "type": "string"},
+        {"name": "Data_Value", "type": "real"},
+        {"name": "Low_Confidence_Limit", "type": "real"},
+        {"name": "High_Confidence_Limit", "type": "real"},
+        {"name": "Sample_Size", "type": "integer"},
+        {"name": "Age(years)", "type": "string"},
+        {"name": "Education", "type": "string"},
+        {"name": "Sex", "type": "string"},
+        {"name": "Income", "type": "string"},
+        {"name": "Race/Ethnicity", "type": "string"},
+        {"name": "ClassID", "type": "string"},
+        {"name": "TopicID", "type": "string"},
+        {"name": "QuestionID", "type": "string"},
+        {"name": "LocationID", "type": "integer"},
+        {"name": "StratificationCategory1", "type": "string"},
+        {"name": "Stratification1", "type": "string"},
+        {"name": "StratificationCategoryId1", "type": "string"},
+        {"name": "StratificationID1", "type": "string"},
+        {"name": "Latitude", "type": "real"},
+        {"name": "Longitude", "type": "real"}
+      ]
+    }
+  },
+  "connections": [
+    {"from": "input_1", "to": "clean_1"},
+    {"from": "clean_1", "to": "clean_2"},
+    {"from": "clean_2", "to": "clean_3"},
+    {"from": "clean_3", "to": "output_1"}
+  ],
+  "connections_metadata": [
+    {
+      "id": "connection_1",
+      "type": "textscan",
+      "filename": "Nutrition_Physical_Activity_Obesity_Clean.csv",
+      "separator": ",",
+      "locale": "en_US",
+      "hasHeaderRow": true
+    }
+  ]
+}
