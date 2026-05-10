@@ -51,7 +51,7 @@ tableau_prep/
 | Week 2 | [Data-Quality](./Data-Quality) | Data Quality Check with a FAIR Dataset | CDC Nutrition & Obesity — 106,260 rows | ✅ Complete |
 | Week 3 | [Data-Profiling](./Data-Profiling) | Data Profiling & Cleaning | Sales transactions — 100 rows | ✅ Complete |
 | Week 3 | [TabPy-Scripts](./TabPy-Scripts) | Tableau Prep + Python (TabPy) | Employee dataset | ✅ Complete |
-| Week 4 | [Graph-Analysis](./Graph-Analysis) | Amazon Network Graph Analysis (Gephi) | Amazon co-purchasing — 2,178 edges | 🔄 In Progress |
+| Week 4 | [Graph-Analysis](./Graph-Analysis) | Amazon Network Graph Analysis (Gephi) | Amazon co-purchasing — 2,178 edges | ✅ Complete |
 
 ---
 
