@@ -1,7 +1,7 @@
 # 📊 Tableau Prep — Data Management Exercises
 
 **University:** SRH University Heidelberg  
-**Course:** Data Management  
+**Course:** Data Management 
 **Tool:** Tableau Prep Builder · Python (TabPy) · Gephi
 
 This repository contains all weekly exercises and projects completed as part of the Data Management course. Each folder represents a separate exercise with its own dataset, flow, output, and report.
